@@ -1,0 +1,7 @@
+.btn {
+  align-self: stretch;
+  padding: 0 5px;
+  border: 1px solid grey;
+  margin-left: 10px;
+  cursor: pointer;
+}
