@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import Form from '../components/Form';
 import List from '../components/List';
-import Header from '../components/Header';
+import Header from '../components/Filter';
 import styles from './App.module.css';
 
 export interface ItemInterface {
-  text: string;
   id: string;
+  text: string;
+  date: string;
   complete: boolean;
 }
 
@@ -16,11 +17,13 @@ class App extends PureComponent {
       {
         id: `${Date.now()}`,
         text: 'sd',
+        date: '2021-07-13',
         complete: false,
       },
       {
         id: `${Date.now() + 1}`,
         text: 'sds',
+        date: '2021-07-13',
         complete: false,
       },
     ],
@@ -31,7 +34,7 @@ class App extends PureComponent {
       <section className={styles.todo}>
         <Header />
         <List list={this.state.list} thisOfState={this} />
-        <Form />
+        <Form thisOfState={this} />
       </section>
     );
   }

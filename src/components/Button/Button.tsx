@@ -6,7 +6,7 @@ export default function ({
   onClick,
 }: {
   text: string;
-  onClick: () => void;
+  onClick?: (e?: any) => void;
 }) {
   return (
     <button className={styles.btn} onClick={onClick}>
