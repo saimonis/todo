@@ -8,3 +8,6 @@
 .text {
   margin-right: auto;
 }
+.complete {
+  background-color: lightgreen;
+}
