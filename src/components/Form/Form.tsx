@@ -14,38 +14,76 @@ export default class Form extends PureComponent<ListInterface> {
     super(props);
     this.handeChange = this.handeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.checkFields = this.checkFields.bind(this);
   }
 
   state = {
-    text: '',
-    date: '',
+    data: {
+      text: '',
+      date: '',
+    },
+    isCorrect: true,
   };
 
-  handeChange(e: any) {
+  checkFields(e: any) {
     e.preventDefault();
-    this.setState({ [e.target.type]: e.target.value });
+    let { text, date } = this.state.data;
+    date
+      ? (date = String(Date.parse(date)))
+      : (date = String(Date.parse(new Date().toDateString())));
+    if (!text || !date) {
+      this.setState({ isCorrect: false });
+      return;
+    }
+    this.handleSubmit(date);
   }
 
-  handleSubmit(e: any) {
-    e.preventDefault();
+  clearFields() {
+    this.setState({
+      data: {
+        text: '',
+        date: '',
+      },
+      isCorrect: true,
+    });
+  }
+
+  handeChange(e: any) {
+    this.setState({
+      data: { ...this.state.data, [e.target.type]: e.target.value },
+    });
+  }
+
+  handleSubmit(date: string) {
     const newItem: ItemInterface = {
       id: `${Date.now()}`,
       complete: false,
-      ...this.state,
+      ...this.state.data,
+      date,
     };
-
-    this.props.thisOfState.setState(({ list }: any) => ({
-      list: [...list, newItem],
+    this.props.thisOfState.setState(({ data }: any) => ({
+      data: [...data, newItem],
     }));
+    this.clearFields();
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form>
         <div className={styles.container}>
-          <Input className={styles['input-text']} onChange={this.handeChange} />
-          <Input type="date" onChange={this.handeChange} />
-          <Button text="Добавить" />
+          <Input
+            className={styles['input-text']}
+            onChange={this.handeChange}
+            correct={this.state.isCorrect}
+            value={this.state.data.text}
+          />
+          <Input
+            type="date"
+            onChange={this.handeChange}
+            correct={this.state.isCorrect}
+            value={this.state.data.date}
+          />
+          <Button text="Добавить" onClick={this.checkFields} />
         </div>
       </form>
     );

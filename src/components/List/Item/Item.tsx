@@ -29,7 +29,7 @@ export default function Item(props: Base) {
   return (
     <li className={itemClassName}>
       <div className={styles.date}>
-        {new Date(date).toLocaleDateString('en-US', options)}
+        {new Date(Number(date)).toLocaleDateString('en-US', options)}
       </div>
       <div className={styles.text}>{text}</div>
       <Button

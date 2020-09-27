@@ -5,7 +5,7 @@ import Item from './Item';
 import { ItemInterface } from '../../pages/App';
 
 interface ListInterface {
-  list: ItemInterface[];
+  data: ItemInterface[];
   thisOfState: any;
 }
 
@@ -17,16 +17,16 @@ export default class List extends PureComponent<ListInterface> {
   }
 
   onDelete(id = '') {
-    this.props.thisOfState.setState(({ list }: { list: { id: string }[] }) => ({
-      list: list.filter((i) => i.id !== id),
+    this.props.thisOfState.setState(({ data }: { data: { id: string }[] }) => ({
+      data: data.filter((i) => i.id !== id),
     }));
   }
 
   onPerform(id = '') {
     this.props.thisOfState.setState(
-      ({ list }: { list: { id: string; complete: boolean }[] }) => {
+      ({ data }: { data: { id: string; complete: boolean }[] }) => {
         return {
-          list: list.map((i) => {
+          data: data.map((i) => {
             if (i.id === id) {
               return { ...i, complete: !i.complete };
             }
@@ -38,7 +38,7 @@ export default class List extends PureComponent<ListInterface> {
   }
 
   render() {
-    const list = this.props.list.map((i: ItemInterface) => (
+    const data = this.props.data.map((i: ItemInterface) => (
       <Item
         data={i}
         key={i.id + i.text}
@@ -46,6 +46,6 @@ export default class List extends PureComponent<ListInterface> {
         onPerform={this.onPerform}
       />
     ));
-    return <ul className={styles.list}>{list}</ul>;
+    return <ul className={styles.list}>{data}</ul>;
   }
 }
