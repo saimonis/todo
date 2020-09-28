@@ -4,6 +4,7 @@ import styles from "./Filters.module.css";
 import Button from "../Button/Button";
 
 import App, { ItemInterface } from "../../pages/App";
+import Dates from "../../Helpers/Dates";
 
 interface Base {
   data: ItemInterface[];
@@ -37,10 +38,8 @@ export default class Filters extends PureComponent<Base> {
 
   useDateFilter(data: ItemInterface[]) {
     return data.filter(({ date }) => {
-      if (!this.state.date) {
-        return true;
-      }
-      return date === String(new Date(this.state.date).getTime());
+      if (!this.state.date) return true;
+      return date === Dates.parseDate(this.state.date);
     });
   }
 

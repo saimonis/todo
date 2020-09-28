@@ -1,16 +1,21 @@
-import React, { PureComponent, SyntheticEvent } from "react";
+import React, {
+  BaseSyntheticEvent,
+  PureComponent,
+  SyntheticEvent,
+} from "react";
 import Button from "../Button";
 import Input from "../Input/Input";
 import styles from "./Form.module.css";
 
 import App, { ItemInterface } from "../../pages/App";
+import Dates from "../../Helpers/Dates";
 
 interface ListInterface {
   thisOfState: App;
 }
 
 export default class Form extends PureComponent<ListInterface> {
-  constructor(props: any) {
+  constructor(props: ListInterface) {
     super(props);
     this.handeChange = this.handeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,13 +33,11 @@ export default class Form extends PureComponent<ListInterface> {
   checkFields(e: SyntheticEvent) {
     e.preventDefault();
     let { text, date } = this.state.data;
-    date
-      ? (date = String(Date.parse(date)))
-      : (date = String(Date.parse(new Date().toDateString())));
     if (!text || !date) {
       this.setState({ isCorrect: false });
       return;
     }
+    date = Dates.parseDate(date);
     this.handleSubmit(date);
   }
 
@@ -48,7 +51,7 @@ export default class Form extends PureComponent<ListInterface> {
     });
   }
 
-  handeChange(e: any) {
+  handeChange(e: BaseSyntheticEvent) {
     this.setState({
       data: { ...this.state.data, [e.target.type]: e.target.value },
     });
@@ -61,7 +64,7 @@ export default class Form extends PureComponent<ListInterface> {
       ...this.state.data,
       date,
     };
-    this.props.thisOfState.setState(({ data }: any) => ({
+    this.props.thisOfState.setState(({ data }: { data: [] }) => ({
       data: [...data, newItem],
     }));
     this.clearFields();

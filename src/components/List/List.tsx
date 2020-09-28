@@ -24,16 +24,12 @@ export default class List extends PureComponent<ListInterface> {
 
   onPerform(id = "") {
     this.props.thisOfState.setState(
-      ({ data }: { data: { id: string; complete: boolean }[] }) => {
-        return {
-          data: data.map((i) => {
-            if (i.id === id) {
-              return { ...i, complete: !i.complete };
-            }
-            return i;
-          }),
-        };
-      }
+      ({ data }: { data: { id: string; complete: boolean }[] }) => ({
+        data: data.map((i) => {
+          if (i.id === id) return { ...i, complete: !i.complete };
+          return i;
+        }),
+      })
     );
   }
 
