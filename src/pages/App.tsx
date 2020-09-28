@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
-import Form from '../components/Form';
-import List from '../components/List';
-import Filters from '../components/Filters';
-import Sorter from '../components/Sorter/Sorter';
-import styles from './App.module.css';
+import React, { PureComponent } from "react";
+import Form from "../components/Form";
+import List from "../components/List";
+import Filters from "../components/Filters";
+import Sorter from "../components/Sorter/Sorter";
+import styles from "./App.module.css";
 
 export interface ItemInterface {
   id: string;
@@ -13,27 +13,30 @@ export interface ItemInterface {
 }
 
 class App extends PureComponent {
-  state: any = {
+  state = {
     data: [],
+    sortedData: [],
     filteredData: [],
   };
 
   componentDidUpdate() {
-    localStorage.setItem('data', JSON.stringify(this.state));
+    localStorage.setItem("data", JSON.stringify(this.state.data));
   }
 
   componentDidMount() {
-    const data = localStorage.getItem('data');
+    let data = localStorage.getItem("data");
     if (data != null) {
-      this.setState(JSON.parse(data));
+      data = JSON.parse(data);
+
+      this.setState({ data });
     }
   }
 
   render() {
     return (
       <section className={styles.todo}>
-        <Filters data={this.state.data} thisOfState={this} />
-        <Sorter thisOfState={this} />
+        <Filters data={this.state.sortedData} thisOfState={this} />
+        <Sorter data={this.state.data} thisOfState={this} />
         <List data={this.state.filteredData} thisOfState={this} />
         <Form thisOfState={this} />
       </section>
