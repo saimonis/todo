@@ -1,28 +1,28 @@
-import React, { PureComponent } from 'react';
-import styles from './List.module.css';
-import Item from './Item';
+import React, { PureComponent } from "react";
+import styles from "./List.module.css";
+import Item from "./Item";
 
-import { ItemInterface } from '../../pages/App';
+import App, { ItemInterface } from "../../pages/App";
 
 interface ListInterface {
   data: ItemInterface[];
-  thisOfState: any;
+  thisOfState: App;
 }
 
 export default class List extends PureComponent<ListInterface> {
-  constructor(props: any) {
+  constructor(props: ListInterface) {
     super(props);
     this.onDelete = this.onDelete.bind(this);
     this.onPerform = this.onPerform.bind(this);
   }
 
-  onDelete(id = '') {
+  onDelete(id = "") {
     this.props.thisOfState.setState(({ data }: { data: { id: string }[] }) => ({
       data: data.filter((i) => i.id !== id),
     }));
   }
 
-  onPerform(id = '') {
+  onPerform(id = "") {
     this.props.thisOfState.setState(
       ({ data }: { data: { id: string; complete: boolean }[] }) => {
         return {

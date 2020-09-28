@@ -1,9 +1,12 @@
-import React, { PureComponent } from 'react';
-import Button from '../Button/Button';
-import styles from './Sorter.module.css';
+import React, { PureComponent } from "react";
+import Button from "../Button/Button";
+import styles from "./Sorter.module.css";
+import Dates from "../../Helpers/Dates";
+
+import App, { ItemInterface } from "../../pages/App";
 
 interface Base {
-  thisOfState: any;
+  thisOfState: App;
 }
 
 export default class Sorter extends PureComponent<Base> {
@@ -13,17 +16,12 @@ export default class Sorter extends PureComponent<Base> {
     isSorted: false,
   };
 
-  _sortByDateCallBack(a: any, b: any) {
-    if (this.state.date)
-      return (
-        new Date(Number(a.date)).getTime() - new Date(Number(b.date)).getTime()
-      );
-    return (
-      new Date(Number(b.date)).getTime() - new Date(Number(a.date)).getTime()
-    );
+  _sortByDateCallBack(a: ItemInterface, b: ItemInterface) {
+    if (this.state.date) return Dates.getTime(a.date) - Dates.getTime(b.date);
+    return Dates.getTime(b.date) - Dates.getTime(a.date);
   }
 
-  _sortByTextCallBack(a: any, b: any) {
+  _sortByTextCallBack(a: ItemInterface, b: ItemInterface) {
     const textA = a.text.toLowerCase(),
       textB = b.text.toLowerCase();
     if (this.state.text) {
@@ -37,36 +35,17 @@ export default class Sorter extends PureComponent<Base> {
   }
 
   sortByDate() {
-    this.props.thisOfState.setState(
-      ({ data }: any) => {
-        return {
-          data: [...data.sort(this._sortByDateCallBack.bind(this))],
-        };
-      },
-      this.setState(({ date }: any) => ({ date: !date, isSorted: true }))
-    );
+    this.props.thisOfState.setState(({ data }: any) => ({
+      data: [...data.sort(this._sortByDateCallBack.bind(this))],
+    }));
+    this.setState(({ date }: any) => ({ date: !date, isSorted: true }));
   }
 
   sortByText() {
-    this.props.thisOfState.setState(
-      ({ data }: any) => {
-        return {
-          data: [...data.sort(this._sortByTextCallBack.bind(this))],
-        };
-      },
-      this.setState(({ text }: any) => ({ text: !text, isSorted: true }))
-    );
-  }
-
-  sortList() {
-    if (this.state.isSorted) {
-      this.sortByDate();
-      this.sortByText();
-    }
-  }
-
-  componentDidMount(): void {
-    this.sortByDate();
+    this.props.thisOfState.setState(({ data }: any) => ({
+      data: [...data.sort(this._sortByTextCallBack.bind(this))],
+    }));
+    this.setState(({ text }: any) => ({ text: !text, isSorted: true }));
   }
 
   render() {

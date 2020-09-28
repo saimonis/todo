@@ -1,13 +1,13 @@
-import React, { PureComponent } from 'react';
-import Input from '../Input/Input';
-import styles from './Filters.module.css';
+import React, { PureComponent, BaseSyntheticEvent } from "react";
+import Input from "../Input/Input";
+import styles from "./Filters.module.css";
+import Button from "../Button/Button";
 
-import { ItemInterface } from '../../pages/App';
-import Button from '../Button/Button';
+import App, { ItemInterface } from "../../pages/App";
 
 interface Base {
   data: ItemInterface[];
-  thisOfState: any;
+  thisOfState: App;
 }
 
 export default class Filters extends PureComponent<Base> {
@@ -18,19 +18,19 @@ export default class Filters extends PureComponent<Base> {
   }
 
   state = {
-    date: '',
-    search: '',
-    transformedDate: '',
+    date: "",
+    search: "",
+    transformedDate: "",
   };
 
   clearFields() {
     this.setState({
-      date: '',
-      search: '',
+      date: "",
+      search: "",
     });
   }
 
-  handleChange(e: any) {
+  handleChange(e: BaseSyntheticEvent) {
     e.preventDefault();
     this.setState({ [e.target.type]: e.target.value }, this.filterList);
   }

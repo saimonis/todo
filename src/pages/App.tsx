@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
-import Form from '../components/Form';
-import List from '../components/List';
-import Filters from '../components/Filters';
-import Sorter from '../components/Sorter/Sorter';
-import styles from './App.module.css';
+import React, { PureComponent } from "react";
+import Form from "../components/Form";
+import List from "../components/List";
+import Filters from "../components/Filters";
+import Sorter from "../components/Sorter/Sorter";
+import styles from "./App.module.css";
 
 export interface ItemInterface {
   id: string;
@@ -13,17 +13,17 @@ export interface ItemInterface {
 }
 
 class App extends PureComponent {
-  state: any = {
+  state = {
     data: [],
     filteredData: [],
   };
 
   componentDidUpdate() {
-    localStorage.setItem('data', JSON.stringify(this.state));
+    localStorage.setItem("data", JSON.stringify(this.state));
   }
 
   componentDidMount() {
-    const data = localStorage.getItem('data');
+    const data = localStorage.getItem("data");
     if (data != null) {
       this.setState(JSON.parse(data));
     }
