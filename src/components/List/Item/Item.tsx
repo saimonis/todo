@@ -3,6 +3,7 @@ import Button from "../../Button/Button";
 import styles from "./Item.module.css";
 
 import { IItem } from "../../../pages/App.types";
+import Dates from "../../../Helpers/Dates";
 
 export interface IBase {
   data: IItem;
@@ -21,16 +22,9 @@ export default function Item(props: IBase) {
     ? `${styles.item} ${styles.complete}`
     : styles.item;
 
-  const options = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  };
   return (
     <li className={itemClassName}>
-      <div className={styles.date}>
-        {new Date(Number(date)).toLocaleDateString("en-US", options)}
-      </div>
+      <div className={styles.date}>{Dates.showDate(date)}</div>
       <div className={styles.text}>{text}</div>
       <Button
         text="res"

@@ -5,7 +5,7 @@ import Filters from "../components/Filters/Filters";
 import Sorter from "../components/Sorter/Sorter";
 import styles from "./App.module.css";
 
-import { IUpdateMainStateCB } from "./App.types";
+import { IUpdateStateCB } from "./App.types";
 
 class App extends PureComponent {
   constructor(props: {}) {
@@ -19,7 +19,7 @@ class App extends PureComponent {
     filteredData: [],
   };
 
-  updateMainState(callback: IUpdateMainStateCB) {
+  updateMainState(callback: IUpdateStateCB) {
     this.setState(callback);
   }
 
@@ -39,10 +39,16 @@ class App extends PureComponent {
   render() {
     return (
       <section className={styles.todo}>
-        <Filters data={this.state.sortedData} thisOfState={this} />
-        <Sorter data={this.state.data} thisOfState={this} />
-        <List data={this.state.filteredData} thisOfState={this} />
-        <Form thisOfState={this} />
+        <Filters
+          data={this.state.sortedData}
+          updateState={this.updateMainState}
+        />
+        <Sorter data={this.state.data} updateState={this.updateMainState} />
+        <List
+          data={this.state.filteredData}
+          updateState={this.updateMainState}
+        />
+        <Form updateState={this.updateMainState} />
       </section>
     );
   }

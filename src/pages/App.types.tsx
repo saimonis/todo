@@ -5,12 +5,16 @@ export interface IItem {
   complete: boolean;
 }
 
-interface IState {
+export interface IMainState {
   data: IItem[];
   sortedData: IItem[];
   filteredData: IItem[];
 }
 
-export interface IUpdateMainStateCB {
-  (state: IState): void;
+export interface IUpdateStateCB {
+  (state: IMainState): void;
+}
+
+export interface IUpdateStateBase {
+  updateState: (callBack: IUpdateStateCB) => void;
 }

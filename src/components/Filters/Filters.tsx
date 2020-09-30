@@ -3,19 +3,18 @@ import Input from "../Input/Input";
 import styles from "./Filters.module.css";
 import Button from "../Button/Button";
 
-import App from "../../pages/App";
-import { IItem } from "../../pages/App.types";
+import { IItem, IUpdateStateBase } from "../../pages/App.types";
 import Dates from "../../Helpers/Dates";
 
-interface IBase {
+interface IBase extends IUpdateStateBase {
   data: IItem[];
-  thisOfState: App;
 }
 
 export default class Filters extends PureComponent<IBase> {
   constructor(props: IBase) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onDateChange = this.onDateChange.bind(this);
     this.clearFields = this.clearFields.bind(this);
   }
 
@@ -32,9 +31,14 @@ export default class Filters extends PureComponent<IBase> {
     });
   }
 
-  handleChange(e: BaseSyntheticEvent) {
+  onInputChange(e: BaseSyntheticEvent) {
     e.preventDefault();
-    this.setState({ [e.target.type]: e.target.value }, this.filterList);
+    this.setState({ search: e.target.value });
+  }
+
+  onDateChange(e: BaseSyntheticEvent) {
+    e.preventDefault();
+    this.setState({ date: e.target.value });
   }
 
   useDateFilter(data: IItem[]) {
@@ -49,9 +53,9 @@ export default class Filters extends PureComponent<IBase> {
   }
 
   filterList() {
-    this.props.thisOfState.setState({
+    this.props.updateState(() => ({
       filteredData: this.useDateFilter(this.useTextFilter(this.props.data)),
-    });
+    }));
   }
 
   componentDidMount() {
@@ -67,12 +71,12 @@ export default class Filters extends PureComponent<IBase> {
       <div className={styles.header}>
         <Input
           type="date"
-          onChange={this.handleChange}
+          onChange={this.onDateChange}
           value={this.state.date}
         />
         <Input
           type="search"
-          onChange={this.handleChange}
+          onChange={this.onInputChange}
           value={this.state.search}
         />
         <Button text="Clear" onClick={this.clearFields} />
