@@ -5,12 +5,23 @@ import Filters from "../components/Filters/Filters";
 import Sorter from "../components/Sorter/Sorter";
 import styles from "./App.module.css";
 
+import { IUpdateMainStateCB } from "./App.types";
+
 class App extends PureComponent {
+  constructor(props: {}) {
+    super(props);
+    this.updateMainState = this.updateMainState.bind(this);
+  }
+
   state = {
     data: [],
     sortedData: [],
     filteredData: [],
   };
+
+  updateMainState(callback: IUpdateMainStateCB) {
+    this.setState(callback);
+  }
 
   componentDidUpdate() {
     localStorage.setItem("data", JSON.stringify(this.state.data));
