@@ -3,18 +3,19 @@ import Button from "../Button/Button";
 import styles from "./Sorter.module.css";
 import Dates from "../../Helpers/Dates";
 
-import App, { ItemInterface } from "../../pages/App";
+import { IItem, IMainState, IUpdateStateBase } from "../../pages/App.types";
 
-interface Base {
-  data: ItemInterface[];
-  thisOfState: App;
+interface IBase extends IUpdateStateBase {
+  data: IItem[];
 }
 
-export default class Sorter extends PureComponent<Base> {
-  constructor(props: Base) {
+export default class Sorter extends PureComponent<IBase> {
+  constructor(props: IBase) {
     super(props);
     this.sortByDate = this.sortByDate.bind(this);
     this.sortByText = this.sortByText.bind(this);
+    this.onTextSort = this.onTextSort.bind(this);
+    this.onDateSort = this.onDateSort.bind(this);
     this._sortByDateCallBack = this._sortByDateCallBack.bind(this);
     this._sortByTextCallBack = this._sortByTextCallBack.bind(this);
   }
@@ -27,12 +28,12 @@ export default class Sorter extends PureComponent<Base> {
     isSorted: false,
   };
 
-  _sortByDateCallBack(a: ItemInterface, b: ItemInterface) {
+  _sortByDateCallBack(a: IItem, b: IItem) {
     if (this.state.date) return Dates.getTime(a.date) - Dates.getTime(b.date);
     return Dates.getTime(b.date) - Dates.getTime(a.date);
   }
 
-  _sortByTextCallBack(a: ItemInterface, b: ItemInterface) {
+  _sortByTextCallBack(a: IItem, b: IItem) {
     const textA = a.text.toLowerCase(),
       textB = b.text.toLowerCase();
     let value = 0;
@@ -43,21 +44,27 @@ export default class Sorter extends PureComponent<Base> {
   }
 
   sortByDate() {
-    this.props.thisOfState.setState(({ sortedData }: { sortedData: [] }) => ({
-      filteredData: [...sortedData.sort(this._sortByDateCallBack)],
-    }));
-    this.setState(({ date }: { date: boolean }) => ({
-      date: !date,
-      isSorted: true,
-      isSortedByDate: true,
-      isSortedByText: false,
+    this.props.updateState(({ sortedData = [] }: IMainState) => ({
+      filteredData: [...sortedData].sort(this._sortByDateCallBack),
     }));
   }
 
   sortByText() {
-    this.props.thisOfState.setState(({ sortedData }: { sortedData: [] }) => ({
-      sortedData: [...sortedData.sort(this._sortByTextCallBack)],
+    this.props.updateState(({ sortedData = [] }: IMainState) => ({
+      sortedData: [...sortedData].sort(this._sortByTextCallBack),
     }));
+  }
+
+  onDateSort() {
+    this.setState(({ date }: { date: boolean }) => ({
+      date: !date,
+      isSorted: true,
+      isSortedByText: false,
+      isSortedByDate: true,
+    }));
+  }
+
+  onTextSort() {
     this.setState(({ text }: { text: string }) => ({
       text: !text,
       isSorted: true,
@@ -69,29 +76,25 @@ export default class Sorter extends PureComponent<Base> {
   componentDidUpdate() {
     if (this.state.isSorted) {
       if (this.state.isSortedByDate)
-        return this.props.thisOfState.setState(
-          ({ data }: { sortedData: []; data: [] }) => ({
-            sortedData: [...data].sort(this._sortByDateCallBack),
-          })
-        );
+        return this.props.updateState(({ data }: IMainState) => ({
+          sortedData: [...data].sort(this._sortByDateCallBack),
+        }));
       if (this.state.isSortedByText)
-        return this.props.thisOfState.setState(
-          ({ data }: { sortedData: []; data: [] }) => ({
-            sortedData: [...data].sort(this._sortByTextCallBack),
-          })
-        );
+        return this.props.updateState(({ data }: IMainState) => ({
+          sortedData: [...data].sort(this._sortByTextCallBack),
+        }));
     } else {
-      this.props.thisOfState.setState({
-        sortedData: [...this.props.thisOfState.state.data],
-      });
+      this.props.updateState(({ data }) => ({
+        sortedData: [...data],
+      }));
     }
   }
 
   render() {
     return (
       <div className={styles.header}>
-        <Button text="По дате" onClick={this.sortByDate} />
-        <Button text="По тексту" onClick={this.sortByText} />
+        <Button text="По дате" onClick={this.onDateSort} />
+        <Button text="По тексту" onClick={this.onTextSort} />
       </div>
     );
   }

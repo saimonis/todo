@@ -1,16 +1,17 @@
-import React from 'react';
-import Button from '../../Button';
-import styles from './Item.module.css';
+import React from "react";
+import Button from "../../Button/Button";
+import styles from "./Item.module.css";
 
-import { ItemInterface } from '../../../pages/App';
+import { IItem } from "../../../pages/App.types";
+import Dates from "../../../Helpers/Dates";
 
-export interface Base {
-  data: ItemInterface;
+export interface IBase {
+  data: IItem;
   onPerform: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export default function Item(props: Base) {
+export default function Item(props: IBase) {
   const {
     data: { id, text, date, complete },
     onPerform,
@@ -21,16 +22,9 @@ export default function Item(props: Base) {
     ? `${styles.item} ${styles.complete}`
     : styles.item;
 
-  const options = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  };
   return (
     <li className={itemClassName}>
-      <div className={styles.date}>
-        {new Date(Number(date)).toLocaleDateString('en-US', options)}
-      </div>
+      <div className={styles.date}>{Dates.showDate(date)}</div>
       <div className={styles.text}>{text}</div>
       <Button
         text="res"

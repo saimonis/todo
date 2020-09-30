@@ -3,21 +3,19 @@ import React, {
   PureComponent,
   SyntheticEvent,
 } from "react";
-import Button from "../Button";
+import Button from "../Button/Button";
 import Input from "../Input/Input";
 import styles from "./Form.module.css";
 
-import App, { ItemInterface } from "../../pages/App";
 import Dates from "../../Helpers/Dates";
 
-interface ListInterface {
-  thisOfState: App;
-}
+import { IItem, IMainState, IUpdateStateBase } from "../../pages/App.types";
 
-export default class Form extends PureComponent<ListInterface> {
-  constructor(props: ListInterface) {
+export default class Form extends PureComponent<IUpdateStateBase> {
+  constructor(props: IUpdateStateBase) {
     super(props);
-    this.handeChange = this.handeChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onDateChange = this.onDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.checkFields = this.checkFields.bind(this);
   }
@@ -51,20 +49,26 @@ export default class Form extends PureComponent<ListInterface> {
     });
   }
 
-  handeChange(e: BaseSyntheticEvent) {
+  onInputChange(e: BaseSyntheticEvent) {
     this.setState({
-      data: { ...this.state.data, [e.target.type]: e.target.value },
+      data: { ...this.state.data, text: e.target.value },
+    });
+  }
+  onDateChange(e: BaseSyntheticEvent) {
+    this.setState({
+      data: { ...this.state.data, date: e.target.value },
     });
   }
 
   handleSubmit(date: string) {
-    const newItem: ItemInterface = {
+    const newItem: IItem = {
       id: `${Date.now()}`,
       complete: false,
       ...this.state.data,
       date,
     };
-    this.props.thisOfState.setState(({ data }: { data: [] }) => ({
+
+    this.props.updateState(({ data }: IMainState) => ({
       data: [...data, newItem],
     }));
     this.clearFields();
@@ -76,13 +80,13 @@ export default class Form extends PureComponent<ListInterface> {
         <div className={styles.container}>
           <Input
             className={styles["input-text"]}
-            onChange={this.handeChange}
+            onChange={this.onInputChange}
             correct={this.state.isCorrect}
             value={this.state.data.text}
           />
           <Input
             type="date"
-            onChange={this.handeChange}
+            onChange={this.onDateChange}
             correct={this.state.isCorrect}
             value={this.state.data.date}
           />

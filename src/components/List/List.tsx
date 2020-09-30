@@ -1,40 +1,37 @@
 import React, { PureComponent } from "react";
 import styles from "./List.module.css";
-import Item from "./Item";
+import Item from "./Item/Item";
 
-import App, { ItemInterface } from "../../pages/App";
+import { IItem, IMainState, IUpdateStateBase } from "../../pages/App.types";
 
-interface ListInterface {
-  data: ItemInterface[];
-  thisOfState: App;
+interface IBase extends IUpdateStateBase {
+  data: IItem[];
 }
 
-export default class List extends PureComponent<ListInterface> {
-  constructor(props: ListInterface) {
+export default class List extends PureComponent<IBase> {
+  constructor(props: IBase) {
     super(props);
     this.onDelete = this.onDelete.bind(this);
     this.onPerform = this.onPerform.bind(this);
   }
 
   onDelete(id = "") {
-    this.props.thisOfState.setState(({ data }: { data: { id: string }[] }) => ({
+    this.props.updateState(({ data = [] }: IMainState) => ({
       data: data.filter((i) => i.id !== id),
     }));
   }
 
   onPerform(id = "") {
-    this.props.thisOfState.setState(
-      ({ data }: { data: { id: string; complete: boolean }[] }) => ({
-        data: data.map((i) => {
-          if (i.id === id) return { ...i, complete: !i.complete };
-          return i;
-        }),
-      })
-    );
+    this.props.updateState(({ data = [] }: IMainState) => ({
+      data: data.map((i) => {
+        if (i.id === id) return { ...i, complete: !i.complete };
+        return i;
+      }),
+    }));
   }
 
   render() {
-    const data = this.props.data.map((i: ItemInterface) => (
+    const data = this.props.data.map((i: IItem) => (
       <Item
         data={i}
         key={i.id + i.text}
