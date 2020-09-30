@@ -3,7 +3,7 @@ import React, {
   PureComponent,
   SyntheticEvent,
 } from "react";
-import Button from "../Button";
+import Button from "../Button/Button";
 import Input from "../Input/Input";
 import styles from "./Form.module.css";
 

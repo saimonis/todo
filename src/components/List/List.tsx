@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import styles from "./List.module.css";
-import Item from "./Item";
+import Item from "./Item/Item";
 
 import App, { ItemInterface } from "../../pages/App";
 

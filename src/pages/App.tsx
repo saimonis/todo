@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
-import Form from "../components/Form";
-import List from "../components/List";
-import Filters from "../components/Filters";
+import Form from "../components/Form/Form";
+import List from "../components/List/List";
+import Filters from "../components/Filters/Filters";
 import Sorter from "../components/Sorter/Sorter";
 import styles from "./App.module.css";
 

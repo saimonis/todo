@@ -1,8 +1,8 @@
-import React from 'react';
-import Button from '../../Button';
-import styles from './Item.module.css';
+import React from "react";
+import Button from "../../Button/Button";
+import styles from "./Item.module.css";
 
-import { ItemInterface } from '../../../pages/App';
+import { ItemInterface } from "../../../pages/App";
 
 export interface Base {
   data: ItemInterface;
@@ -22,14 +22,14 @@ export default function Item(props: Base) {
     : styles.item;
 
   const options = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
   };
   return (
     <li className={itemClassName}>
       <div className={styles.date}>
-        {new Date(Number(date)).toLocaleDateString('en-US', options)}
+        {new Date(Number(date)).toLocaleDateString("en-US", options)}
       </div>
       <div className={styles.text}>{text}</div>
       <Button
