@@ -3,15 +3,17 @@ import Button from "../Button/Button";
 import styles from "./Sorter.module.css";
 import Dates from "../../Helpers/Dates";
 
-import App, { ItemInterface } from "../../pages/App";
+import App from "../../pages/App";
 
-interface Base {
-  data: ItemInterface[];
+import { IItem } from "../../pages/App.types";
+
+interface IBase {
+  data: IItem[];
   thisOfState: App;
 }
 
-export default class Sorter extends PureComponent<Base> {
-  constructor(props: Base) {
+export default class Sorter extends PureComponent<IBase> {
+  constructor(props: IBase) {
     super(props);
     this.sortByDate = this.sortByDate.bind(this);
     this.sortByText = this.sortByText.bind(this);
@@ -27,12 +29,12 @@ export default class Sorter extends PureComponent<Base> {
     isSorted: false,
   };
 
-  _sortByDateCallBack(a: ItemInterface, b: ItemInterface) {
+  _sortByDateCallBack(a: IItem, b: IItem) {
     if (this.state.date) return Dates.getTime(a.date) - Dates.getTime(b.date);
     return Dates.getTime(b.date) - Dates.getTime(a.date);
   }
 
-  _sortByTextCallBack(a: ItemInterface, b: ItemInterface) {
+  _sortByTextCallBack(a: IItem, b: IItem) {
     const textA = a.text.toLowerCase(),
       textB = b.text.toLowerCase();
     let value = 0;

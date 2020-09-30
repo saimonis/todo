@@ -7,15 +7,17 @@ import Button from "../Button/Button";
 import Input from "../Input/Input";
 import styles from "./Form.module.css";
 
-import App, { ItemInterface } from "../../pages/App";
+import App from "../../pages/App";
 import Dates from "../../Helpers/Dates";
 
-interface ListInterface {
+import { IItem } from "../../pages/App.types";
+
+interface IList {
   thisOfState: App;
 }
 
-export default class Form extends PureComponent<ListInterface> {
-  constructor(props: ListInterface) {
+export default class Form extends PureComponent<IList> {
+  constructor(props: IList) {
     super(props);
     this.handeChange = this.handeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,7 +60,7 @@ export default class Form extends PureComponent<ListInterface> {
   }
 
   handleSubmit(date: string) {
-    const newItem: ItemInterface = {
+    const newItem: IItem = {
       id: `${Date.now()}`,
       complete: false,
       ...this.state.data,

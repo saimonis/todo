@@ -2,15 +2,15 @@ import React from "react";
 import Button from "../../Button/Button";
 import styles from "./Item.module.css";
 
-import { ItemInterface } from "../../../pages/App";
+import { IItem } from "../../../pages/App.types";
 
-export interface Base {
-  data: ItemInterface;
+export interface IBase {
+  data: IItem;
   onPerform: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export default function Item(props: Base) {
+export default function Item(props: IBase) {
   const {
     data: { id, text, date, complete },
     onPerform,

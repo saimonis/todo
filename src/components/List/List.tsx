@@ -2,15 +2,17 @@ import React, { PureComponent } from "react";
 import styles from "./List.module.css";
 import Item from "./Item/Item";
 
-import App, { ItemInterface } from "../../pages/App";
+import App from "../../pages/App";
 
-interface ListInterface {
-  data: ItemInterface[];
+import { IItem } from "../../pages/App.types";
+
+interface IList {
+  data: IItem[];
   thisOfState: App;
 }
 
-export default class List extends PureComponent<ListInterface> {
-  constructor(props: ListInterface) {
+export default class List extends PureComponent<IList> {
+  constructor(props: IList) {
     super(props);
     this.onDelete = this.onDelete.bind(this);
     this.onPerform = this.onPerform.bind(this);
@@ -34,7 +36,7 @@ export default class List extends PureComponent<ListInterface> {
   }
 
   render() {
-    const data = this.props.data.map((i: ItemInterface) => (
+    const data = this.props.data.map((i: IItem) => (
       <Item
         data={i}
         key={i.id + i.text}

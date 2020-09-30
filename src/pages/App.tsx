@@ -5,13 +5,6 @@ import Filters from "../components/Filters/Filters";
 import Sorter from "../components/Sorter/Sorter";
 import styles from "./App.module.css";
 
-export interface ItemInterface {
-  id: string;
-  text: string;
-  date: string;
-  complete: boolean;
-}
-
 class App extends PureComponent {
   state = {
     data: [],

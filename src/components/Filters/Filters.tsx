@@ -3,16 +3,17 @@ import Input from "../Input/Input";
 import styles from "./Filters.module.css";
 import Button from "../Button/Button";
 
-import App, { ItemInterface } from "../../pages/App";
+import App from "../../pages/App";
+import { IItem } from "../../pages/App.types";
 import Dates from "../../Helpers/Dates";
 
-interface Base {
-  data: ItemInterface[];
+interface IBase {
+  data: IItem[];
   thisOfState: App;
 }
 
-export default class Filters extends PureComponent<Base> {
-  constructor(props: Base) {
+export default class Filters extends PureComponent<IBase> {
+  constructor(props: IBase) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.clearFields = this.clearFields.bind(this);
@@ -36,14 +37,14 @@ export default class Filters extends PureComponent<Base> {
     this.setState({ [e.target.type]: e.target.value }, this.filterList);
   }
 
-  useDateFilter(data: ItemInterface[]) {
+  useDateFilter(data: IItem[]) {
     return data.filter(({ date }) => {
       if (!this.state.date) return true;
       return date === Dates.parseDate(this.state.date);
     });
   }
 
-  useTextFilter(data: ItemInterface[]) {
+  useTextFilter(data: IItem[]) {
     return data.filter(({ text }) => text.includes(this.state.search));
   }
 
