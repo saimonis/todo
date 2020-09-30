@@ -3,18 +3,18 @@ import Input from "../Input/Input";
 import styles from "./Filters.module.css";
 import Button from "../Button/Button";
 
-import App, { ItemInterface } from "../../pages/App";
+import { IItem, IUpdateStateBase } from "../../pages/App.types";
 import Dates from "../../Helpers/Dates";
 
-interface Base {
-  data: ItemInterface[];
-  thisOfState: App;
+interface IBase extends IUpdateStateBase {
+  data: IItem[];
 }
 
-export default class Filters extends PureComponent<Base> {
-  constructor(props: Base) {
+export default class Filters extends PureComponent<IBase> {
+  constructor(props: IBase) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onDateChange = this.onDateChange.bind(this);
     this.clearFields = this.clearFields.bind(this);
   }
 
@@ -31,26 +31,31 @@ export default class Filters extends PureComponent<Base> {
     });
   }
 
-  handleChange(e: BaseSyntheticEvent) {
+  onInputChange(e: BaseSyntheticEvent) {
     e.preventDefault();
-    this.setState({ [e.target.type]: e.target.value }, this.filterList);
+    this.setState({ search: e.target.value });
   }
 
-  useDateFilter(data: ItemInterface[]) {
+  onDateChange(e: BaseSyntheticEvent) {
+    e.preventDefault();
+    this.setState({ date: e.target.value });
+  }
+
+  useDateFilter(data: IItem[]) {
     return data.filter(({ date }) => {
       if (!this.state.date) return true;
       return date === Dates.parseDate(this.state.date);
     });
   }
 
-  useTextFilter(data: ItemInterface[]) {
+  useTextFilter(data: IItem[]) {
     return data.filter(({ text }) => text.includes(this.state.search));
   }
 
   filterList() {
-    this.props.thisOfState.setState({
+    this.props.updateState(() => ({
       filteredData: this.useDateFilter(this.useTextFilter(this.props.data)),
-    });
+    }));
   }
 
   componentDidMount() {
@@ -66,12 +71,12 @@ export default class Filters extends PureComponent<Base> {
       <div className={styles.header}>
         <Input
           type="date"
-          onChange={this.handleChange}
+          onChange={this.onDateChange}
           value={this.state.date}
         />
         <Input
           type="search"
-          onChange={this.handleChange}
+          onChange={this.onInputChange}
           value={this.state.search}
         />
         <Button text="Clear" onClick={this.clearFields} />
