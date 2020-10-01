@@ -10,7 +10,7 @@ import { IUpdateStateCB } from "./App.types";
 class App extends PureComponent {
   constructor(props: {}) {
     super(props);
-    this.updateMainState = this.updateMainState.bind(this);
+    this._updateMainState = this._updateMainState.bind(this);
   }
 
   state = {
@@ -19,7 +19,7 @@ class App extends PureComponent {
     filteredData: [],
   };
 
-  updateMainState(callback: IUpdateStateCB) {
+  _updateMainState(callback: IUpdateStateCB) {
     this.setState(callback);
   }
 
@@ -41,14 +41,14 @@ class App extends PureComponent {
       <section className={styles.todo}>
         <Filters
           data={this.state.sortedData}
-          updateState={this.updateMainState}
+          updateState={this._updateMainState}
         />
-        <Sorter data={this.state.data} updateState={this.updateMainState} />
+        <Sorter data={this.state.data} updateState={this._updateMainState} />
         <List
           data={this.state.filteredData}
-          updateState={this.updateMainState}
+          updateState={this._updateMainState}
         />
-        <Form updateState={this.updateMainState} />
+        <Form updateState={this._updateMainState} />
       </section>
     );
   }

@@ -2,9 +2,9 @@ import React, { PureComponent, BaseSyntheticEvent } from "react";
 import Input from "../Input/Input";
 import styles from "./Filters.module.css";
 import Button from "../Button/Button";
+import Dates from "../../Helpers/Dates";
 
 import { IItem, IUpdateStateBase } from "../../pages/App.types";
-import Dates from "../../Helpers/Dates";
 
 interface IBase extends IUpdateStateBase {
   data: IItem[];
@@ -41,29 +41,29 @@ export default class Filters extends PureComponent<IBase> {
     this.setState({ date: e.target.value });
   }
 
-  useDateFilter(data: IItem[]) {
+  _useDateFilter(data: IItem[]) {
     return data.filter(({ date }) => {
       if (!this.state.date) return true;
       return date === Dates.parseDate(this.state.date);
     });
   }
 
-  useTextFilter(data: IItem[]) {
+  _useTextFilter(data: IItem[]) {
     return data.filter(({ text }) => text.includes(this.state.search));
   }
 
-  filterList() {
+  _filterList() {
     this.props.updateState(() => ({
-      filteredData: this.useDateFilter(this.useTextFilter(this.props.data)),
+      filteredData: this._useDateFilter(this._useTextFilter(this.props.data)),
     }));
   }
 
   componentDidMount() {
-    this.filterList();
+    this._filterList();
   }
 
   componentDidUpdate() {
-    this.filterList();
+    this._filterList();
   }
 
   render() {

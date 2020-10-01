@@ -16,8 +16,7 @@ export default class Form extends PureComponent<IUpdateStateBase> {
     super(props);
     this.onInputChange = this.onInputChange.bind(this);
     this.onDateChange = this.onDateChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.checkFields = this.checkFields.bind(this);
+    this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
   state = {
@@ -28,7 +27,7 @@ export default class Form extends PureComponent<IUpdateStateBase> {
     isCorrect: true,
   };
 
-  checkFields(e: SyntheticEvent) {
+  onSubmitForm(e: SyntheticEvent) {
     e.preventDefault();
     let { text, date } = this.state.data;
     if (!text || !date) {
@@ -36,10 +35,22 @@ export default class Form extends PureComponent<IUpdateStateBase> {
       return;
     }
     date = Dates.parseDate(date);
-    this.handleSubmit(date);
+    this._handleSubmit(date);
   }
 
-  clearFields() {
+  onInputChange(e: BaseSyntheticEvent) {
+    this.setState({
+      data: { ...this.state.data, text: e.target.value },
+    });
+  }
+
+  onDateChange(e: BaseSyntheticEvent) {
+    this.setState({
+      data: { ...this.state.data, date: e.target.value },
+    });
+  }
+
+  _clearFields() {
     this.setState({
       data: {
         text: "",
@@ -49,18 +60,7 @@ export default class Form extends PureComponent<IUpdateStateBase> {
     });
   }
 
-  onInputChange(e: BaseSyntheticEvent) {
-    this.setState({
-      data: { ...this.state.data, text: e.target.value },
-    });
-  }
-  onDateChange(e: BaseSyntheticEvent) {
-    this.setState({
-      data: { ...this.state.data, date: e.target.value },
-    });
-  }
-
-  handleSubmit(date: string) {
+  _handleSubmit(date: string) {
     const newItem: IItem = {
       id: `${Date.now()}`,
       complete: false,
@@ -71,7 +71,7 @@ export default class Form extends PureComponent<IUpdateStateBase> {
     this.props.updateState(({ data }: IMainState) => ({
       data: [...data, newItem],
     }));
-    this.clearFields();
+    this._clearFields();
   }
 
   render() {
@@ -90,7 +90,7 @@ export default class Form extends PureComponent<IUpdateStateBase> {
             correct={this.state.isCorrect}
             value={this.state.data.date}
           />
-          <Button text="Добавить" onClick={this.checkFields} />
+          <Button text="Добавить" onClick={this.onSubmitForm} />
         </div>
       </form>
     );
