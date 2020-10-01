@@ -12,8 +12,6 @@ interface IBase extends IUpdateStateBase {
 export default class Sorter extends PureComponent<IBase> {
   constructor(props: IBase) {
     super(props);
-    this.sortByDate = this.sortByDate.bind(this);
-    this.sortByText = this.sortByText.bind(this);
     this.onTextSort = this.onTextSort.bind(this);
     this.onDateSort = this.onDateSort.bind(this);
     this._sortByDateCallBack = this._sortByDateCallBack.bind(this);
@@ -41,18 +39,6 @@ export default class Sorter extends PureComponent<IBase> {
     if (textA < textB) value = 1;
     if (this.state.text) value *= -1;
     return value;
-  }
-
-  sortByDate() {
-    this.props.updateState(({ sortedData = [] }: IMainState) => ({
-      filteredData: [...sortedData].sort(this._sortByDateCallBack),
-    }));
-  }
-
-  sortByText() {
-    this.props.updateState(({ sortedData = [] }: IMainState) => ({
-      sortedData: [...sortedData].sort(this._sortByTextCallBack),
-    }));
   }
 
   onDateSort() {
