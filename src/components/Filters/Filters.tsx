@@ -25,12 +25,10 @@ export default class Filters extends PureComponent<IBase> {
   };
 
   onInputChange = (e: BaseSyntheticEvent) => {
-    e.preventDefault();
     this.setState({ search: e.target.value });
   };
 
   onDateChange = (e: BaseSyntheticEvent) => {
-    e.preventDefault();
     this.setState({ date: e.target.value });
   };
 
