@@ -12,13 +12,6 @@ import Dates from "../../Helpers/Dates";
 import { IItem, IMainState, IUpdateStateBase } from "../../pages/App.types";
 
 export default class Form extends PureComponent<IUpdateStateBase> {
-  constructor(props: IUpdateStateBase) {
-    super(props);
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onDateChange = this.onDateChange.bind(this);
-    this.onSubmitForm = this.onSubmitForm.bind(this);
-  }
-
   state = {
     data: {
       text: "",
@@ -27,7 +20,7 @@ export default class Form extends PureComponent<IUpdateStateBase> {
     isCorrect: true,
   };
 
-  onSubmitForm(e: SyntheticEvent) {
+  onSubmitForm = (e: SyntheticEvent) => {
     e.preventDefault();
     let { text, date } = this.state.data;
     if (!text || !date) {
@@ -36,19 +29,19 @@ export default class Form extends PureComponent<IUpdateStateBase> {
     }
     date = Dates.parseDate(date);
     this._handleSubmit(date);
-  }
+  };
 
-  onInputChange(e: BaseSyntheticEvent) {
+  onInputChange = (e: BaseSyntheticEvent) => {
     this.setState({
       data: { ...this.state.data, text: e.target.value },
     });
-  }
+  };
 
-  onDateChange(e: BaseSyntheticEvent) {
+  onDateChange = (e: BaseSyntheticEvent) => {
     this.setState({
       data: { ...this.state.data, date: e.target.value },
     });
-  }
+  };
 
   _clearFields() {
     this.setState({

@@ -9,26 +9,20 @@ interface IBase extends IUpdateStateBase {
 }
 
 export default class List extends PureComponent<IBase> {
-  constructor(props: IBase) {
-    super(props);
-    this.onDelete = this.onDelete.bind(this);
-    this.onPerform = this.onPerform.bind(this);
-  }
-
-  onDelete(id = "") {
+  onDelete = (id: string) => {
     this.props.updateState(({ data = [] }: IMainState) => ({
       data: data.filter((i) => i.id !== id),
     }));
-  }
+  };
 
-  onPerform(id = "") {
+  onPerform = (id: string) => {
     this.props.updateState(({ data = [] }: IMainState) => ({
       data: data.map((i) => {
         if (i.id === id) return { ...i, complete: !i.complete };
         return i;
       }),
     }));
-  }
+  };
 
   render() {
     const data = this.props.data.map((i: IItem) => (

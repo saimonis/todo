@@ -10,14 +10,6 @@ interface IBase extends IUpdateStateBase {
 }
 
 export default class Sorter extends PureComponent<IBase> {
-  constructor(props: IBase) {
-    super(props);
-    this.onTextSort = this.onTextSort.bind(this);
-    this.onDateSort = this.onDateSort.bind(this);
-    this._sortByDateCallBack = this._sortByDateCallBack.bind(this);
-    this._sortByTextCallBack = this._sortByTextCallBack.bind(this);
-  }
-
   state = {
     date: false,
     text: false,
@@ -26,12 +18,12 @@ export default class Sorter extends PureComponent<IBase> {
     isSorted: false,
   };
 
-  _sortByDateCallBack(a: IItem, b: IItem) {
+  _sortByDateCallBack = (a: IItem, b: IItem) => {
     if (this.state.date) return Dates.getTime(a.date) - Dates.getTime(b.date);
     return Dates.getTime(b.date) - Dates.getTime(a.date);
-  }
+  };
 
-  _sortByTextCallBack(a: IItem, b: IItem) {
+  _sortByTextCallBack = (a: IItem, b: IItem) => {
     const textA = a.text.toLowerCase(),
       textB = b.text.toLowerCase();
     let value = 0;
@@ -39,25 +31,25 @@ export default class Sorter extends PureComponent<IBase> {
     if (textA < textB) value = 1;
     if (this.state.text) value *= -1;
     return value;
-  }
+  };
 
-  onDateSort() {
+  onDateSort = () => {
     this.setState(({ date }: { date: boolean }) => ({
       date: !date,
       isSorted: true,
       isSortedByText: false,
       isSortedByDate: true,
     }));
-  }
+  };
 
-  onTextSort() {
+  onTextSort = () => {
     this.setState(({ text }: { text: string }) => ({
       text: !text,
       isSorted: true,
       isSortedByText: true,
       isSortedByDate: false,
     }));
-  }
+  };
 
   componentDidUpdate() {
     if (this.state.isSorted) {

@@ -11,35 +11,28 @@ interface IBase extends IUpdateStateBase {
 }
 
 export default class Filters extends PureComponent<IBase> {
-  constructor(props: IBase) {
-    super(props);
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onDateChange = this.onDateChange.bind(this);
-    this.clearFields = this.clearFields.bind(this);
-  }
-
   state = {
     date: "",
     search: "",
     transformedDate: "",
   };
 
-  clearFields() {
+  clearFields = () => {
     this.setState({
       date: "",
       search: "",
     });
-  }
+  };
 
-  onInputChange(e: BaseSyntheticEvent) {
+  onInputChange = (e: BaseSyntheticEvent) => {
     e.preventDefault();
     this.setState({ search: e.target.value });
-  }
+  };
 
-  onDateChange(e: BaseSyntheticEvent) {
+  onDateChange = (e: BaseSyntheticEvent) => {
     e.preventDefault();
     this.setState({ date: e.target.value });
-  }
+  };
 
   _useDateFilter(data: IItem[]) {
     return data.filter(({ date }) => {
