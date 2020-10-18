@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from "react";
 import styles from "./Button.module.css";
 
-export default function ({
+function Button({
   text,
   onClick,
 }: {
@@ -14,3 +14,5 @@ export default function ({
     </button>
   );
 }
+
+export default React.memo(Button);

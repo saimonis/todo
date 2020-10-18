@@ -9,7 +9,7 @@ interface Input {
   value?: string;
 }
 
-export default function Input(props: Input) {
+function Input(props: Input) {
   const {
     type = "text",
     className = "",
@@ -29,3 +29,5 @@ export default function Input(props: Input) {
     </>
   );
 }
+
+export default React.memo(Input);
