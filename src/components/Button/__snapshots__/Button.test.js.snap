@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Buttons test renders properly 1`] = `
+"<button className=\\"btn\\" onClick={[Function: mockConstructor]}>
+  btnText
+</button>"
+`;
